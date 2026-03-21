@@ -71,7 +71,7 @@ class Renderer {
         nextCellDataG = new int[cellHeight][cellWidth];
         nextCellDataB = new int[cellHeight][cellWidth];
         
-        transition = new Transition(this, cellWidth, cellHeight);
+        transition = new Transition(cellWidth, cellHeight);
     }
 
     /**
@@ -223,20 +223,21 @@ class Renderer {
         
         for (int cy = 0; cy < cellHeight; cy++) {
             for (int cx = 0; cx < cellWidth; cx++) {
+                byte b = (byte) getBlurredValue(cx, cy, cellDataB);
+                byte g = (byte) getBlurredValue(cx, cy, cellDataG);
+                byte r = (byte) getBlurredValue(cx, cy, cellDataR);
                 for (int i = 0; i < PIXEL_SIZE * PIXEL_SIZE; i++) {
                     int pos = i * 4;
-                    // Direct mapping: 0=black, 255=white
-                    blockBuffer[pos] =     (byte) getBlurredValue(cx, cy, cellDataB); // Blue
-                    blockBuffer[pos + 1] = (byte) getBlurredValue(cx, cy, cellDataG); // Green
-                    blockBuffer[pos + 2] = (byte) getBlurredValue(cx, cy, cellDataR); // Red
-                    blockBuffer[pos + 3] = (byte) 255;  // Alpha (fully opaque)
+                    blockBuffer[pos]     = b;
+                    blockBuffer[pos + 1] = g;
+                    blockBuffer[pos + 2] = r;
+                    blockBuffer[pos + 3] = (byte) 255;
                 }
                 
-                // Write pixel block to screen
                 int screenX = cx * PIXEL_SIZE;
                 int screenY = cy * PIXEL_SIZE;
                 if (screenX + PIXEL_SIZE <= width && screenY + PIXEL_SIZE <= height) {
-                    pixelWriter.setPixels(screenX, screenY, PIXEL_SIZE, PIXEL_SIZE, 
+                    pixelWriter.setPixels(screenX, screenY, PIXEL_SIZE, PIXEL_SIZE,
                                         pixelFormat, blockBuffer, 0, PIXEL_SIZE * 4);
                 }
             }

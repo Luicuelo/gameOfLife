@@ -17,7 +17,7 @@ class Transition {
      * @param width the width of the grid
      * @param height the height of the grid
      */
-    public Transition(Renderer renderer, int width, int height) {
+    public Transition(int width, int height) {
         this.width = width;
         this.height = height;
     }

@@ -55,7 +55,7 @@ public class GameOfLife extends Application {
 		Parameters params = getParameters();
 		parseSize(params);
 
-		primaryStage.setTitle("EstadosFX");
+		primaryStage.setTitle("GameOfLive");
 
 		// Create and initialize
 		initialize();
@@ -147,7 +147,6 @@ public class GameOfLife extends Application {
 			public void handle(long now) {
 				if (!finished && renderer != null) {
 					frameCounter++;
-					if (frameCounter>=Double.MAX_VALUE)frameCounter=0;
 					if (frameCounter % FRAME_SKIP == 0) {
 						try {
 							renderer.updateRegion();
